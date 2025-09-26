@@ -6,8 +6,4 @@ try:
 except:
     print('Pasta ./Leitor de CTE já existe')
 
-try:
-    shutil.rmtree( './sample_data')
-except:
-    pass
 

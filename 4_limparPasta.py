@@ -4,13 +4,18 @@ import shutil
 try:
     os.mkdir("./Leitor de CTE")
 except:
-    print('Pasta ./Leitor de CTE já existe')
+    print('\nPasta "/Leitor de CTE" já existe...')
+
+    inp = input('Deseja excluí-la? (s/n) > ').upper()
+    print()
+
+    if inp == "S":
+        shutil.rmtree("./Leitor de CTE")
+        os.mkdir("./Leitor de CTE")
 
 try:
-    shutil.rmtree( './sample_data')
+    os.remove('./CTES.pdf')
+    os.remove('./Medições DHL.xlsm')
+    os.remove('./relatório_cte.xlsx')
 except:
     pass
-
-!pip install PyPDF2
-!pip install reportlab
-!pip install pdfplumber
