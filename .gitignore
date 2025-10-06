@@ -1,9 +1,9 @@
 # Custom for this repo
+/Backup
 /Leitor de cte
 *.pdf
 *.xlsx
 *.xlsm
-/Backup
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

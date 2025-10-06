@@ -36,6 +36,7 @@ def gerar_etiqueta(output_path, signer, pedido):
     cria_linha(x, y, 'Nat: 311018',2)
     cria_linha(x, y, 'IC: 11801', 3)
     cria_linha(x, y, 'CC: 220109', 4)
+    cria_linha(x, y, 'Cód: SERV000362', 5)
 
     if signer.upper() == 'G':
         cria_linha(x+250, y, 'Gustavo Carvalho Daquano', 3)
@@ -97,22 +98,6 @@ def merge_pdfs_in_directory(directory_path, output_filename, pdf_files_order):
 
     print(f"\nTodos os {len(pdf_files_order)} arquivos foram mesclados e estão no arquivo {output_filename}")
 
-
-# Geração
-
- # coleta de dados
-input_signer = input('Quem vai assinar? \nM: Michelle \nG: Gustavo \nQualquer outro valor gera sem assinante. \n\n')
-input_data = input('\n\n\nGerar etiquetas de qual data? \nUtilizar formato dd/mm/aa \n\n')
-
-if input_data != '':
-    data = datetime.strptime(input_data, '%d/%m/%y').date()
-else:
-    data = datetime.today().date()
-
-data_formatada = f'{data.day}-{data.month}-{data.year}'
-
-path_ctes = './CTES.pdf'
-path_saida = f'./DHL {data_formatada}.pdf'
 
 def main():
     # Para cada pedido, gera a etiqueta se tiver algo nos pedidos da planilha "Medições DHL.xlsx" no dia inserido no input. Depois sobrepor as CTEs com as etiquetas no arquivo "DHL <data do input>.pdf"'''
@@ -222,86 +207,22 @@ def main():
 
     print(f'{ctes_semPedido} CT-e(s) ficaram sem pedido, favor preencher manualmente')
 
-main()
 
+# Geração
+if __name__ == '__main__':
 
+    # coleta de dados
+    input_signer = input('Quem vai assinar? \nM: Michelle \nG: Gustavo \nQualquer outro valor gera sem assinante. \n\n')
+    input_data = input('\n\n\nGerar etiquetas de qual data? \nUtilizar formato dd/mm/aa \n\n')
 
-# Dicionário com os padrões
-padroes = {
-    "CT-E": r"N[ºº]?[^\d]*([\d\.]+)",  # Extrai número do CTE após "Nº"
-    "Pedido": r"Pedido:\s*(\d+)",  # Extrai o número após "Pedido:"
-}
+    if input_data != '':
+        data = datetime.strptime(input_data, '%d/%m/%y').date()
+    else:
+        data = datetime.today().date()
 
-# Lista para armazenar os dados extraídos de cada PDF
-dados_extraidos = []
+    data_formatada = f'{data.day}-{data.month}-{data.year}'
 
+    path_ctes = './CTES.pdf'
+    path_saida = f'./DHL {data_formatada}.pdf'
 
-# Placeholder pra testes customizados
-# path_saida = f'./DHL 22-9-2025.pdf'
-# data = datetime.strptime("22/9/25", '%d/%m/%y').date()
-
-
-caminho_pdf = path_saida
-
-# Abre o PDF
-with pdfplumber.open(caminho_pdf) as pdf:
-
-    # Percorre todas as páginas do PDF
-    for i in range(len(pdf.pages)):
-
-        pagina = pdf.pages[i]
-        texto = pagina.extract_text()
-
-
-        if texto:
-            # Dicionário para armazenar os dados de uma página
-            dados_pdf = {"Página": i + 1}
-
-            # Para cada campo definido, aplica a regex e salva o resultado
-            for campo, padrao in padroes.items():
-                match = re.search(padrao, texto, re.IGNORECASE)
-
-                valorEncontrado = match.group(1).strip() if match else ""
-
-                if valorEncontrado != "":
-                    dados_pdf[campo] = valorEncontrado
-                else:
-                    dados_pdf = {"Página": i + 1, "Pedido":"n/a"}
-
-        else:
-            dados_pdf = {"Página": i + 1, "Pedido":-1}
-
-
-        dados_extraidos.append(dados_pdf)
-
-
-df_resultado = pd.DataFrame(dados_extraidos) #.drop('Página', axis=1)
-
-print(df_resultado)
-
-df_planilha = gerar_base('./Medições DHL.xlsm', str(data))
-df_planilha = df_planilha.drop('DATA', axis=1).reset_index(drop=True)
-
-
-# Converter as colunas 'CT-E' e 'Pedido' em df_resultado para numérico (int), lidando com erros
-df_resultado['CT-E'] = pd.to_numeric(df_resultado['CT-E'], errors='coerce').astype('Int64')
-df_resultado['Pedido'] = pd.to_numeric(df_resultado['Pedido'], errors='coerce').astype('Int64')
-
-
-# Converter as colunas 'CT-E' e 'Pedido' em df_planilha para int
-df_planilha[['CT-E', 'Pedido']] = df_planilha[['CT-E', 'Pedido']].astype(int)
-
-if len(df_planilha) == len(df_resultado):
-    for i in range(len(df_planilha)):
-        pag = df_resultado['Página'].iloc[i]
-
-        if df_resultado['Pedido'].iloc[i] != -1:
-            if df_planilha['Pedido'].iloc[i] == df_resultado['Pedido'].iloc[i]:
-                print(f'Página {pag}: Pedido Correto')
-            else:
-                print(f'Página {pag}: Pedido NÃO está de acordo com planilha')
-        else:
-            print(f'Página {pag}: Pedido NÃO ENCONTRADO')
-else:
-    print("Erro!")
-    print(f"A planilha tem {len(df_planilha)} linhas mas o arquivo DHL tem {len(df_resultado)} CT-Es")
+    main()
