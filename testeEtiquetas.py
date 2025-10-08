@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+import os
 
 import pdfplumber
 import pandas as pd
@@ -7,7 +8,8 @@ import pandas as pd
 from gerarEtiquetas import gerar_base
 
 caminho_pdf = './DHL 2-10-2025.pdf'
-dataDesejada = '02/10/2025'
+dataDesejada = '02/10/25'
+buscaPor = "CT-E"
 
 # Dicionário com os padrões
 padroes = {
@@ -29,10 +31,10 @@ with pdfplumber.open(caminho_pdf) as pdf:
         pagina = pdf.pages[i]
         texto = pagina.extract_text()
 
+        dados_pdf:dict = {"Página": i + 1}
 
         if texto:
             # Dicionário para armazenar os dados de uma página
-            dados_pdf = {"Página": i + 1}
 
             # Para cada campo definido, aplica a regex e salva o resultado
             for campo, padrao in padroes.items():
@@ -40,43 +42,70 @@ with pdfplumber.open(caminho_pdf) as pdf:
 
                 valorEncontrado = match.group(1).strip() if match else ""
 
-                if valorEncontrado != "":
+                if valorEncontrado:
                     dados_pdf[campo] = valorEncontrado
                 else:
-                    dados_pdf = {"Página": i + 1, "Pedido":"n/a"}
+                    dados_pdf[campo] = "<não-encontrado>"
 
         else:
-            dados_pdf = {"Página": i + 1, "Pedido":-1}
+            dados_pdf = {"Página": i + 1, "CT-E":"<página-ilegível>", "Pedido":"<página-ilegível>"}
 
 
         dados_extraidos.append(dados_pdf)
 
 
-df_resultado = pd.DataFrame(dados_extraidos) #.drop('Página', axis=1)
+df_pdf = pd.DataFrame(dados_extraidos) #.drop('Página', axis=1)
 
 df_planilha = gerar_base('./Medições DHL.xlsm', str(data))
 df_planilha = df_planilha.drop('DATA', axis=1).reset_index(drop=True)
 
 
-# Converter as colunas 'CT-E' e 'Pedido' em df_resultado para numérico (int), lidando com erros
-df_resultado['CT-E'] = pd.to_numeric(df_resultado['CT-E'], errors='coerce').astype('Int64')
-df_resultado['Pedido'] = pd.to_numeric(df_resultado['Pedido'], errors='coerce').astype('Int64')
+# Converter as colunas 'CT-E' e 'Pedido' em df_pdf para numérico (int), lidando com erros
+df_pdf['CT-E'] = pd.to_numeric(df_pdf['CT-E'], errors='coerce').astype('Int64')
+df_pdf['Pedido'] = pd.to_numeric(df_pdf['Pedido'], errors='coerce').astype('Int64')
 
 
 # Converter as colunas 'CT-E' e 'Pedido' em df_planilha para int
 df_planilha[['CT-E', 'Pedido']] = df_planilha[['CT-E', 'Pedido']].astype(int)
 
-if len(df_planilha) == len(df_resultado):
-    for i in range(len(df_planilha)):
-        pag = df_resultado['Página'].iloc[i]
+df_resultado = df_planilha.copy()
 
-        if df_resultado['Pedido'].iloc[i] != -1:
-            if df_planilha['Pedido'].iloc[i] == df_resultado['Pedido'].iloc[i]:
-                print(f'Página {pag}: Pedido Correto')
-            else:
-                print(f'Página {pag}: Pedido NÃO está de acordo com planilha')
-        else:
-            print(f'Página {pag}: Pedido NÃO ENCONTRADO')
-else:
-    print("Erro!")
-    print(f"A planilha tem {len(df_planilha)} linhas mas o arquivo DHL tem {len(df_resultado)} CT-Es")
+if buscaPor == "Pedido":
+
+    df_resultado["Página"] = "Pedido não encontrado"
+    df_resultado["Núm. Pedidos Encontrados"] = 0
+
+    # df.loc[row_indexer, "col"] 
+
+    for i in range(len(df_resultado)):
+        Pedido = df_resultado.loc[i, "Pedido"]
+        nPedido = 0
+
+        for j in range(len(df_pdf)):
+            if Pedido == df_pdf.loc[j, "Pedido"]:
+                nPedido += 1
+                df_resultado.loc[i, "Página"] = df_pdf.loc[j, "Página"]
+        
+        df_resultado.loc[i, "Núm. Pedidos Encontrados"] = nPedido
+else: # buscaPor == "CT-E"
+
+    df_resultado["Página"] = "CT-E não encontrada"
+    df_resultado["Núm. CT-Es Encontradas"] = 0
+
+    for i in range(len(df_resultado)):
+        cte = df_resultado.loc[i, "CT-E"]
+        nCte = 0
+
+        for j in range(len(df_pdf)):
+            if cte == df_pdf.loc[j, "CT-E"]:
+                nCte += 1
+                df_resultado.loc[i, "Página"] = df_pdf.loc[j, "Página"]
+        
+        df_resultado.loc[i, "Núm. CT-Es Encontradas"] = nCte
+        
+
+try:
+    df_resultado.to_excel(f'{buscaPor}.xlsx')
+except:
+    os.remove(f'{buscaPor}.xlsx')
+    df_resultado.to_excel(f'{buscaPor}.xlsx')
