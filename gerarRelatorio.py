@@ -115,6 +115,8 @@ padroes = {
     "AWB": r"\bW[B8][^\d]*(\d{6,})\b"  # Extrai número após "WB" ou "W8"
 }
 
+print('Aguarde...')
+
 # Lista para armazenar os dados extraídos de cada PDF
 dados_extraidos = []
 
