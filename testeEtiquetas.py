@@ -7,9 +7,9 @@ import pandas as pd
 
 from gerarEtiquetas import gerar_base
 
-caminho_pdf = './DHL 2-10-2025.pdf'
-dataDesejada = '02/10/25'
-buscaPor = "CT-E"
+caminho_pdf = './DHL 8-10-2025.pdf'
+dataDesejada = '08/10/25'
+buscaPor = "Pedido"
 
 # Dicionário com os padrões
 padroes = {
@@ -64,6 +64,8 @@ df_planilha = df_planilha.drop('DATA', axis=1).reset_index(drop=True)
 df_pdf['CT-E'] = pd.to_numeric(df_pdf['CT-E'], errors='coerce').astype('Int64')
 df_pdf['Pedido'] = pd.to_numeric(df_pdf['Pedido'], errors='coerce').astype('Int64')
 
+df_pdf.dropna(inplace=True)
+df_pdf.reset_index(inplace=True)
 
 # Converter as colunas 'CT-E' e 'Pedido' em df_planilha para int
 df_planilha[['CT-E', 'Pedido']] = df_planilha[['CT-E', 'Pedido']].astype(int)
@@ -102,7 +104,7 @@ else: # buscaPor == "CT-E"
                 df_resultado.loc[i, "Página"] = df_pdf.loc[j, "Página"]
         
         df_resultado.loc[i, "Núm. CT-Es Encontradas"] = nCte
-        
+
 
 try:
     df_resultado.to_excel(f'{buscaPor}.xlsx')

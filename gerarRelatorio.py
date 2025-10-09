@@ -108,6 +108,7 @@ diretorio_pdfs = "./Leitor de CTE"
 
 # Dicionário com os padrões
 padroes = {
+    "TIPO": r"\b(Normal|Complemento)\b", # Encontra o tipo da CT-e
     "FORNECEDOR": r"\b(CURITIBA|SAO PAULO|BRASILIA)\b",  # Extrai uma das cidades específicas
     "Nº CTE": r"N[ºº]?[^\d]*([\d\.]+)",  # Extrai número do CTE após "Nº"
     "VALOR": r"RECEBER[^\d]*([\d\.,]+)",  # Extrai valor após a palavra "RECEBER"
@@ -115,7 +116,7 @@ padroes = {
     "AWB": r"\bW[B8][^\d]*(\d{6,})\b"  # Extrai número após "WB" ou "W8"
 }
 
-print('Aguarde...')
+print('\n\nAguarde...\n')
 
 # Lista para armazenar os dados extraídos de cada PDF
 dados_extraidos = []
