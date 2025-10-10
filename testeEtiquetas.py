@@ -7,9 +7,9 @@ import pandas as pd
 
 from gerarEtiquetas import gerar_base
 
-caminho_pdf = './DHL 8-10-2025.pdf'
-dataDesejada = '08/10/25'
-buscaPor = "Pedido"
+caminho_pdf = './DHL 9-10-2025.pdf'
+dataDesejada = '09/10/25'
+buscaPor = "CT-E"
 
 # Dicionário com os padrões
 padroes = {
@@ -107,7 +107,7 @@ else: # buscaPor == "CT-E"
 
 
 try:
-    df_resultado.to_excel(f'{buscaPor}.xlsx')
+    df_resultado.to_excel(f'relatorioErros_{buscaPor}.xlsx')
 except:
     os.remove(f'{buscaPor}.xlsx')
-    df_resultado.to_excel(f'{buscaPor}.xlsx')
+    df_resultado.to_excel(f'relatorioErros_{buscaPor}.xlsx')
