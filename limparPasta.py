@@ -1,5 +1,5 @@
 import os
-import shutil
+from util import rmPasta
 
 input('Antes de limpar, certifique-se de fechar as planilhas abertas e salvar arquivos que não devem ser excluídos... \n(Pressione qualquer tecla para continuar)')
 
@@ -12,15 +12,25 @@ except:
     print()
 
     if inp == "S":
-        shutil.rmtree("./Leitor de CTE")
+        rmPasta("./Leitor de CTE")
         os.mkdir("./Leitor de CTE")
 
 try:
     os.remove('./CTES.pdf')
+except:
+    pass
+
+try:
     os.remove('./Medições DHL.xlsm')
+except:
+    pass
+
+try:
     os.remove('./relatório_cte.xlsx')
-    os.remove('./CT-E.xlsx')
-    os.remove('./Pedidos.xlsx')
-    
+except:
+    pass
+
+try:
+    os.remove('./relatorioErros_CT-E.xlsx')
 except:
     pass

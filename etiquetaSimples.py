@@ -3,7 +3,7 @@
 from datetime import date
 from datetime import datetime
 import os
-import shutil
+from util import rmPasta
 
 from PyPDF2 import PdfReader, PdfWriter
 from reportlab.pdfgen import canvas
@@ -21,7 +21,7 @@ def main():
     if not os.path.exists(f'./{data_formatada}'):
         os.mkdir(f'./{data_formatada}')
     else:
-        shutil.rmtree(f'./{data_formatada}')
+        rmPasta(f'./{data_formatada}')
         os.mkdir(f'./{data_formatada}')
 
     # Abre o PDF
@@ -74,7 +74,7 @@ def main():
 
     # exclusão da pasta temporária
     try:
-        shutil.rmtree(f'./{data_formatada}')
+        rmPasta(f'./{data_formatada}')
     except:
         print(f'Pasta ./{data_formatada} já foi excluída')
         pass

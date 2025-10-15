@@ -3,12 +3,20 @@ import pandas as pd
 from datetime import date
 import os
 
-from PyPDF2 import PdfReader, PdfWriter
-
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
-from dataclasses import dataclass
+import pymupdf
 
+def rmPasta(dir):
+    'Remove uma pasta por completo (incluindo os arquivos)'
+    
+    arquivos = os.listdir(dir)
+    
+    for arquivo in arquivos:
+        path = os.path.join(dir, arquivo)
+        os.remove(path)
+        
+    os.rmdir(dir)
 
 def findKey(dict, searchValue):
     'Encontra a primeira key do *value* em *dict*'
@@ -84,8 +92,8 @@ def unir_pdfs(directory_path, output_filename, pdf_files_order):
     for filename, ocurrence in filenamesDict.items():
         assert ocurrence < 2, f'[unir_pdfs] Erro: o arquivo {filename}, aparece {ocurrence} vezes em *pdf_files_order*'
             
-
-    writer = PdfWriter()
+            
+    doc = pymupdf.open()
 
     for pdf_filename in pdf_files_order:
 
@@ -95,43 +103,15 @@ def unir_pdfs(directory_path, output_filename, pdf_files_order):
             print(f"Aviso: arquivo não encontrado: {pdf_filename}")
 
             continue
-
+        
         try:
-            pdf_file = PdfReader(pdf_path)
-            for page in pdf_file.pages:
-                writer.add_page(page)
-
+            doc.insert_file(pdf_path)  
+            
         except Exception as e:
             print(f"Não foi possível ler o arquivo {pdf_filename}: {e}")
             
-    @dataclass
-    class Page:
-        text:int
-        ocurrence:int
 
-    Pages = []
-    texts = {}
+    doc.save(output_filename)
+    doc.close()
     
-
-    for i in range(len(writer.pages)):
-        page = writer.pages[i]
-        text = page.extract_text()
-        
-        try:
-            key = findKey(texts, text)
-            pageIndex = int(key)
-            
-            Pages[pageIndex].ocurrence += 1
-            
-        except ValueError:
-            Pages.append(Page(text, 1))
-            texts[i] = text
-            
-    for page in Pages:
-        assert page.ocurrence < 2, f'[unir_pdfs] Uma ou mais páginas aparecem {page.ocurrence} vezes'
-    
-    
-    with open(output_filename, "wb") as output_file:
-        writer.write(output_file)
-
     print(f"\nTodos os {len(pdf_files_order)} arquivos foram mesclados e estão no arquivo {output_filename}")

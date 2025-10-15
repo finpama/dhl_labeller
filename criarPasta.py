@@ -1,5 +1,4 @@
 import os
-import shutil
 
 try:
     os.mkdir("./Leitor de CTE")

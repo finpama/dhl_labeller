@@ -3,7 +3,7 @@
 from datetime import date
 from datetime import datetime
 import os
-import shutil
+from util import rmPasta
 import re
 
 import pandas as pd
@@ -38,7 +38,7 @@ def main():
     if not os.path.exists(f'./{data_formatada}'):
         os.mkdir(f'./{data_formatada}')
     else:
-        shutil.rmtree(f'./{data_formatada}')
+        rmPasta(f'./{data_formatada}')
         os.mkdir(f'./{data_formatada}')
 
     df_planilha.reset_index(inplace=True)
@@ -111,7 +111,7 @@ def main():
 
     # exclusão da pasta temporária
     try:
-        shutil.rmtree(f'./{data_formatada}')
+        rmPasta(f'./{data_formatada}')
     except:
         print(f'Pasta ./{data_formatada} já foi excluída')
         pass
