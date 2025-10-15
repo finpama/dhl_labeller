@@ -7,7 +7,7 @@ from reportlab.lib.pagesizes import A4
 
 import re
 import pdfplumber
-from util import merge_pdfs_in_directory
+from util import unir_pdfs
 
 # Caminho dos arquivos
 diretorio_pdfs = "./Leitor de CTE"
@@ -65,6 +65,6 @@ else:
     # Salva o DataFrame em um arquivo Excel
     df_resultado.to_excel("relatório_cte.xlsx", index=False)
 
-    merge_pdfs_in_directory('./Leitor de CTE', f'./CTES.pdf', arquivos)
+    unir_pdfs('./Leitor de CTE', f'./CTES.pdf', arquivos)
 
     print('Gerado o arquivo unificado "CTES.pdf" e o "relatório_cte.xlsx" com os pdfs na pasta Leitor de CTE')

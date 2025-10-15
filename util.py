@@ -7,9 +7,19 @@ from PyPDF2 import PdfReader, PdfWriter
 
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
+from dataclasses import dataclass
+
+
+def findKey(dict, searchValue):
+    'Encontra a primeira key do *value* em *dict*'
+    
+    for key, value in dict.items():
+        if value == searchValue:
+            return key
+    
+    raise ValueError(f'[findKey] A key do valor não foi encontrada')
 
 # Puxa pedidos, cria etiquetas e insere na pasta "hoje"
-
 def gerar_etiqueta(output_path, signer, pedido):
     '''Cria PDF de etiqueta com o <pedido> informado e caso informado G ou M no campo <signer>
        Adiciona a etiqueta de assinatura do Gustavo e da Michelle respectivamente.
@@ -44,7 +54,6 @@ def gerar_etiqueta(output_path, signer, pedido):
     c.save()
 
 # Gera dataframe com pedidos
-
 def gerar_base(sheet_dir, dateEmission = str(date.today())):
     '''A partir da planilha <sheet_dir>, gera o dataframe com os pedidos do dia em <dateEmission> (se omitido, usa data de hoje)'''
 
@@ -58,30 +67,70 @@ def gerar_base(sheet_dir, dateEmission = str(date.today())):
 
     return base
 
-
-
 # Mescla de PDF
+def unir_pdfs(directory_path, output_filename, pdf_files_order):
+    'Une os pdfs na pasta *directory_path* para o arquivo *output_filename*, utilizando a ordem em *pdf_files_order*'
 
-def merge_pdfs_in_directory(directory_path, output_filename, pdf_files_order):
+    assert pdf_files_order, '[unir_pdfs] Sem arquivos em *pdf_files_order*'
+    
+    filenamesDict = {}
+
+    for filename in pdf_files_order:
+        if filename in filenamesDict:
+            filenamesDict[filename] += 1
+        else:
+            filenamesDict[filename] = 1
+            
+    for filename, ocurrence in filenamesDict.items():
+        assert ocurrence < 2, f'[unir_pdfs] Erro: o arquivo {filename}, aparece {ocurrence} vezes em *pdf_files_order*'
+            
+
     writer = PdfWriter()
 
-    if not pdf_files_order:
-        print(f"No PDF files specified for merging in directory: {directory_path}")
-        return
+    for pdf_filename in pdf_files_order:
 
-    for pdf_file in pdf_files_order:
-        pdf_path = os.path.join(directory_path, pdf_file)
+        pdf_path = os.path.join(directory_path, pdf_filename)
+
         if not os.path.exists(pdf_path):
-            print(f"Warning: File not found and skipped: {pdf_file}")
-            continue
-        try:
-            reader = PdfReader(pdf_path)
-            for page in reader.pages:
-                writer.add_page(page)
-        except Exception as e:
-            print(f"Could not read or process file {pdf_file}: {e}")
+            print(f"Aviso: arquivo não encontrado: {pdf_filename}")
 
-    # Write the merged PDF to the output file
+            continue
+
+        try:
+            pdf_file = PdfReader(pdf_path)
+            for page in pdf_file.pages:
+                writer.add_page(page)
+
+        except Exception as e:
+            print(f"Não foi possível ler o arquivo {pdf_filename}: {e}")
+            
+    @dataclass
+    class Page:
+        text:int
+        ocurrence:int
+
+    Pages = []
+    texts = {}
+    
+
+    for i in range(len(writer.pages)):
+        page = writer.pages[i]
+        text = page.extract_text()
+        
+        try:
+            key = findKey(texts, text)
+            pageIndex = int(key)
+            
+            Pages[pageIndex].ocurrence += 1
+            
+        except ValueError:
+            Pages.append(Page(text, 1))
+            texts[i] = text
+            
+    for page in Pages:
+        assert page.ocurrence < 2, f'[unir_pdfs] Uma ou mais páginas aparecem {page.ocurrence} vezes'
+    
+    
     with open(output_filename, "wb") as output_file:
         writer.write(output_file)
 

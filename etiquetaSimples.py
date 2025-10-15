@@ -10,7 +10,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 import pdfplumber
 
-from util import gerar_etiqueta, merge_pdfs_in_directory
+from util import gerar_etiqueta, unir_pdfs
 
 
 def main():
@@ -70,7 +70,7 @@ def main():
 
 
     # merge das ctes etiquetadas
-    merge_pdfs_in_directory(f'./{data_formatada}', path_saida, pdf_order)
+    unir_pdfs(f'./{data_formatada}', path_saida, pdf_order)
 
     # exclusão da pasta temporária
     try:
