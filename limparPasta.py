@@ -1,5 +1,5 @@
 import os
-from util import rmPasta
+from _util import rmPasta
 
 input('Antes de limpar, certifique-se de fechar as planilhas abertas e salvar arquivos que não devem ser excluídos... \n(Pressione qualquer tecla para continuar)')
 

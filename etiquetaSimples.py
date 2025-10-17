@@ -3,14 +3,14 @@
 from datetime import date
 from datetime import datetime
 import os
-from util import rmPasta
+from _util import rmPasta
 
 from PyPDF2 import PdfReader, PdfWriter
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 import pdfplumber
 
-from util import gerar_etiqueta, unir_pdfs
+from _util import gerar_etiqueta, unir_pdfs
 
 
 def main():

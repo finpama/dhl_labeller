@@ -3,7 +3,7 @@
 from datetime import date
 from datetime import datetime
 import os
-from util import rmPasta
+from _util import rmPasta
 import re
 
 import pandas as pd
@@ -12,7 +12,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 import pdfplumber
 
-from util import gerar_base, gerar_etiqueta, unir_pdfs
+from _util import gerar_base, gerar_etiqueta, unir_pdfs
 
 
 def main():
@@ -138,7 +138,7 @@ if __name__ == '__main__':
 
     data_formatada = f'{data.day}-{data.month}-{data.year}'
 
-    path_ctes = './CTES.pdf'
+    path_ctes = './CTEs (Sem Etiqueta).pdf'
     path_saida = f'./DHL {data_formatada}.pdf'
 
     main()
