@@ -4,11 +4,12 @@ from _util import rmPasta
 input('Antes de limpar, certifique-se de fechar as planilhas abertas e salvar arquivos que não devem ser excluídos... \n(Pressione qualquer tecla para continuar)')
 
 try:
+    os.rmdir("./Leitor de CTE")
     os.mkdir("./Leitor de CTE")
 except:
-    print('\nPasta "/Leitor de CTE" já existe...')
+    print('\nPasta "/Leitor de CTE" possuí arquivos...')
 
-    inp = input('Deseja excluí-la? (s/n) > ').upper()
+    inp = input('Deseja excluí-los? (s/n) > ').upper()
     print()
 
     if inp == "S":
@@ -16,7 +17,7 @@ except:
         os.mkdir("./Leitor de CTE")
 
 try:
-    os.remove('./CTES.pdf')
+    os.remove('./CTEs (Sem Etiqueta).pdf')
 except:
     pass
 
