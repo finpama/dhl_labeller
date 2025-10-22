@@ -1,6 +1,5 @@
 # Célula de Configuração
 
-from datetime import date
 from datetime import datetime
 import os
 from _util import rmPasta

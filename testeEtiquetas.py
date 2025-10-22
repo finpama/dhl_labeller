@@ -7,8 +7,8 @@ import pandas as pd
 
 from gerarEtiquetas import gerar_base
 
-caminho_pdf = './DHL 13-10-2025.pdf'
-dataDesejada = '13/10/25'
+caminho_pdf = './DHL 20-10-2025.pdf'
+dataDesejada = '20/10/25'
 buscaPor = "CT-E"
 
 # Dicionário com os padrões
