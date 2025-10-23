@@ -13,6 +13,7 @@ from reportlab.lib.pagesizes import A4
 import pdfplumber
 
 from _util import gerar_base, gerar_etiqueta, unir_pdfs
+import testeEtiquetas
 
 
 def main():
@@ -109,16 +110,6 @@ def main():
     # merge das ctes etiquetadas
     unir_pdfs(f'./{data_formatada}', path_saida, pdf_order)
 
-    # exclusão da pasta temporária
-    try:
-        rmPasta(f'./{data_formatada}')
-    except:
-        print(f'Pasta ./{data_formatada} já foi excluída')
-        pass
-
-
-
-
     print(f'\n\nEtiquetas e CTEs sobrepostas no arquivo "{path_saida}"')
 
     print(f'{ctes_semPedido} CT-e(s) ficaram sem pedido, favor preencher manualmente')
@@ -142,3 +133,5 @@ if __name__ == '__main__':
     path_saida = f'./DHL {data_formatada}.pdf'
 
     main()
+    
+    testeEtiquetas.main(path_saida, input_data)
