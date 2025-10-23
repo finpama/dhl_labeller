@@ -5,6 +5,9 @@ import os
 
 from reportlab.lib.pagesizes import A4
 
+from PyQt6.QtWidgets import QMessageBox
+
+
 import re
 import pdfplumber
 from _util import unir_pdfs
@@ -30,7 +33,7 @@ def main(localSalvamento:str, diretorio_pdfs:str, gerarArquivoUnico:bool):
     arquivos.sort()
 
     if arquivos == []:
-        print('Nenhum arquivo na pasta "./Leitor de CTE"')
+        QMessageBox.critical(None, 'Erro...', f'Nenhum arquivo encontrado em "{diretorio_pdfs}"')
     else:
 
         # Percorre todos os arquivos no diretório
