@@ -1,7 +1,7 @@
 import os
 from _util import rmPasta
 
-input('Antes de limpar, certifique-se de fechar as planilhas abertas e salvar arquivos que não devem ser excluídos... \n(Pressione qualquer tecla para continuar)')
+data = input('Antes de limpar, certifique-se de fechar as planilhas abertas e salvar arquivos que não devem ser excluídos... \nInsira a data da última geração, no formato dd-mm-aaaa: ')
 
 try:
     os.rmdir("./Leitor de CTE")
@@ -15,6 +15,16 @@ except:
     if inp == "S":
         rmPasta("./Leitor de CTE")
         os.mkdir("./Leitor de CTE")
+
+try:
+    os.rmPasta(f'./{data}')
+except:
+    pass
+
+try:
+    os.remove(f'./DHL {data}.pdf')
+except:
+    pass
 
 try:
     os.remove('./CTEs (Sem Etiqueta).pdf')
