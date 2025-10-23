@@ -7,6 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+import gerarRelatorio
 
 
 class Ui_JanelaTagg(object):
@@ -164,6 +165,29 @@ class Ui_JanelaTagg(object):
         self.retranslateUi(JanelaTagg)
         self.abasWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(JanelaTagg)
+        
+        # Eventos
+        
+        self.relatorio_botaoSelecaoPasta.clicked.connect(self.eventoSelecaoPasta)
+        self.relatorio_botaoGerar.clicked.connect(self.eventoGerarRelatorio)
+        
+        
+        
+    def eventoGerarRelatorio(self):
+        localSalvamento = str(QtWidgets.QFileDialog.getExistingDirectory(caption="Selecione a pasta onde serão salvos o(s) arquivo(s)..."))
+        
+        gerarRelatorio.main(localSalvamento, self.pastaLeitor, self.relatorio_checkboxArquivoUnico.isChecked())
+    
+    def eventoSelecaoPasta(self):
+        # Abre seletor de pasta
+        self.relatorio_inputSelecaoPasta.setPlainText("Aguarde...")
+        pasta = str(QtWidgets.QFileDialog.getExistingDirectory(caption="Selecione a pasta onde estão os PDFs DHL..."))
+        self.relatorio_inputSelecaoPasta.setPlainText(pasta)
+        
+        self.pastaLeitor = pasta
+        
+        #self.relatorio_checkboxArquivoUnico.isChecked()
+    
 
     def retranslateUi(self, JanelaTagg):
         _translate = QtCore.QCoreApplication.translate
