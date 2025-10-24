@@ -8,7 +8,7 @@ import pandas as pd
 
 from gerarEtiquetas import gerar_base
 
-def main(caminho_pdf, dataDesejada):
+def main(caminho_saidaRelatorio, caminho_pdf, caminho_medicoes, dataDesejada):
     
     buscaPor = "CT-E"
 
@@ -21,7 +21,7 @@ def main(caminho_pdf, dataDesejada):
     # Lista para armazenar os dados extraídos de cada PDF
     dados_extraidos = []
 
-    data = datetime.strptime(dataDesejada, '%d/%m/%y').date()
+    data = datetime.strptime(dataDesejada, '%d/%m/%Y').date()
 
     # Abre o PDF
     with pdfplumber.open(caminho_pdf) as pdf:
@@ -57,7 +57,7 @@ def main(caminho_pdf, dataDesejada):
 
     df_pdf = pd.DataFrame(dados_extraidos) #.drop('Página', axis=1)
 
-    df_planilha = gerar_base('./Medições DHL.xlsm', str(data))
+    df_planilha = gerar_base(caminho_medicoes, str(data))
     df_planilha = df_planilha.drop('DATA', axis=1).reset_index(drop=True)
 
 
@@ -109,10 +109,10 @@ def main(caminho_pdf, dataDesejada):
     print('\n')
 
     try:
-        df_resultado.to_excel(f'./relatorioErros_{buscaPor}.xlsx')
+        df_resultado.to_excel(f'{caminho_saidaRelatorio}/relatorioErros_{buscaPor}.xlsx')
     except PermissionError:
         input(f'O arquivo "relatorioErros_{buscaPor}.xlsx" já existe na pasta, após remover, pressione qualquer tecla para continuar.')
-        df_resultado.to_excel(f'./relatorioErros_{buscaPor}.xlsx')
+        df_resultado.to_excel(f'{caminho_saidaRelatorio}/relatorioErros_{buscaPor}.xlsx')
     
     print(f'Teste de etiquetas concluído e disponível no arquivo: "relatorioErros_{buscaPor}.xlsx"')
 

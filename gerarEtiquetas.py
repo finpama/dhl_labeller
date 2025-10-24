@@ -1,6 +1,5 @@
 # Célula de Configuração
 
-from datetime import date
 from datetime import datetime
 import os
 from _util import rmPasta
@@ -12,14 +11,26 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 import pdfplumber
 
+from PyQt6.QtWidgets import QMessageBox
+
 from _util import gerar_base, gerar_etiqueta, unir_pdfs
 import testeEtiquetas
 
 
-def main():
+def main(input_signer:str, input_data:str, caminhoArquivoUnico:str, caminhoMedicoes:str, caminhoSaida:str):
+    
+    if input_data != '':
+        data = datetime.strptime(input_data, '%d/%m/%Y').date()
+    else:
+        data = datetime.today().date()
+
+    data_formatada = f'{data.day}-{data.month}-{data.year}'
+
+    caminho_saida = f'{caminhoSaida}/DHL {data_formatada}.pdf'
+    
     # Para cada pedido, gera a etiqueta se tiver algo nos pedidos da planilha "Medições DHL.xlsx" no dia inserido no input. Depois sobrepor as CTEs com as etiquetas no arquivo "DHL <data do input>.pdf"'''
 
-    df_planilha = gerar_base('./Medições DHL.xlsm', str(data))
+    df_planilha = gerar_base(caminhoMedicoes, str(data))
     df_planilha[['CT-E', 'Pedido']] = df_planilha[['CT-E', 'Pedido']].astype(int)
 
     pdf_order = []
@@ -31,7 +42,7 @@ def main():
 
     # se a df_planilha tiver pedidos, gera uma etiqueta pra cada pedido em uma pasta temporária
     if df_planilha.Pedido.empty:
-        print(f'Nenhum pedido de {data_formatada} na planilha')
+        QMessageBox.critical(None, 'Erro...', f'Nenhum pedido de {data_formatada} na planilha')
         return
 
     print('\nAguarde...')
@@ -46,11 +57,7 @@ def main():
 
     # Abre o PDF
 
-    with pdfplumber.open(path_ctes) as pdf:
-
-        if len(pdf.pages) != len(df_planilha.Pedido):
-            print(f'O arquivo CTES.pdf tem {len(pdf.pages)} CT-Es, já a planilha no dia {data_formatada} tem {len(df_planilha.Pedido)} pedidos, favor verificar')
-            return
+    with pdfplumber.open(caminhoArquivoUnico) as pdf:
 
         # Percorre todas as páginas do PDF
         for i in range(len(pdf.pages)):
@@ -59,7 +66,7 @@ def main():
             texto = pagina.extract_text()
 
             if not texto:
-                raise Exception(f"ERRO: Nenhum texto encontrado no arquivo {path_ctes}")
+                raise Exception(f"ERRO: Nenhum texto encontrado no arquivo {caminhoArquivoUnico}")
 
             # Aplica a regex
             match = re.search(padrao, texto, re.IGNORECASE)
@@ -71,7 +78,8 @@ def main():
             try:
                 pedido = int(df_planilha['Pedido'].iloc[i_cte].iloc[0])
             except:
-                print(f'Pág. {i+1}: Ocorreu um erro ao procurar a CT-e, favor preencher manualmente...')
+                QMessageBox.critical(None, 'Erro...', f'Pág. {i+1}: Ocorreu um erro ao procurar a CT-e, favor preencher manualmente...')
+                
                 pedido = ""
                 ctes_semPedido += 1
 
@@ -90,7 +98,7 @@ def main():
             # Sobreposição (overlay) das cte com a etiqueta
             output = PdfWriter()
 
-            with open(path_ctes, 'rb') as arquivoCTEs:
+            with open(caminhoArquivoUnico, 'rb') as arquivoCTEs:
                 pdfCTE = PdfReader(arquivoCTEs)
 
                 with open(path_etiqueta, 'rb') as arquivoEtiqueta:
@@ -104,34 +112,17 @@ def main():
 
                     with open(path_cte_mesclada, "wb") as out_pdf:
                         output.write(out_pdf)
-
-
-
+                        
+    
     # merge das ctes etiquetadas
-    unir_pdfs(f'./{data_formatada}', path_saida, pdf_order)
+    unir_pdfs(f'./{data_formatada}', caminho_saida, pdf_order)
 
-    print(f'\n\nEtiquetas e CTEs sobrepostas no arquivo "{path_saida}"')
+    print(f'\n\nEtiquetas e CTEs sobrepostas no arquivo "{caminho_saida}"')
 
     print(f'{ctes_semPedido} CT-e(s) ficaram sem pedido, favor preencher manualmente')
 
-
-# Geração
-if __name__ == '__main__':
-
-    # coleta de dados
-    input_signer = input('Quem vai assinar? \nM: Michelle \nG: Gustavo \nQualquer outro valor gera sem assinante. \n\n')
-    input_data = input('\n\n\nGerar etiquetas de qual data? \nUtilizar formato dd/mm/aa \n\n')
-
-    if input_data != '':
-        data = datetime.strptime(input_data, '%d/%m/%y').date()
-    else:
-        data = datetime.today().date()
-
-    data_formatada = f'{data.day}-{data.month}-{data.year}'
-
-    path_ctes = './CTEs (Sem Etiqueta).pdf'
-    path_saida = f'./DHL {data_formatada}.pdf'
-
-    main()
+    testeEtiquetas.main(caminhoSaida, caminho_saida, caminhoMedicoes, input_data)
     
-    testeEtiquetas.main(path_saida, input_data)
+    return 0
+    
+    
