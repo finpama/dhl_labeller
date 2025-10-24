@@ -11,12 +11,16 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import gerarRelatorio
 import gerarEtiquetas
 
+import ctypes
+myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
 
 class Ui_JanelaTagg(object):
     def setupUi(self, JanelaTagg):
         JanelaTagg.setObjectName("JanelaTagg")
         JanelaTagg.resize(776, 515)
-        JanelaTagg.setMinimumSize(QtCore.QSize(776, 515))
+        JanelaTagg.setMinimumSize(QtCore.QSize(795, 535))
         self.centralwidget = QtWidgets.QWidget(parent=JanelaTagg)
         self.centralwidget.setEnabled(True)
         self.centralwidget.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
@@ -219,7 +223,11 @@ class Ui_JanelaTagg(object):
         
     def eventoSelecaoMedicoes(self):
         self.etiquetador_inputSelecaoMedicoes.setPlainText("Aguarde...")
+
+        self.telaCarregando(True)
         arquivo = QtWidgets.QFileDialog.getOpenFileName(None, 'Selecione o arquivo medições com todos os pedidos atualizados...', filter="Arquivo Excel (*.xlsx *.xlsm)")
+        self.telaCarregando(False)
+        
         self.caminhoMedicoes = arquivo[0]
         
         self.etiquetador_inputSelecaoMedicoes.setPlainText(self.caminhoMedicoes)
@@ -227,7 +235,11 @@ class Ui_JanelaTagg(object):
     
     def eventoSelecaoArquivo(self):
         self.etiquetador_inputSelecaoArquivo.setPlainText("Aguarde...")
+        
+        self.telaCarregando(True)
         arquivo = QtWidgets.QFileDialog.getOpenFileName(None, 'Selecione o arquivo com todas CT-Es mescladas', filter="Arquivo PDF (*.pdf)")
+        self.telaCarregando(False)
+        
         self.caminhoArquivo = arquivo[0]
         
         self.etiquetador_inputSelecaoArquivo.setPlainText(self.caminhoArquivo)
@@ -251,8 +263,8 @@ class Ui_JanelaTagg(object):
         pastaDestino = str(QtWidgets.QFileDialog.getExistingDirectory(caption="Selecione a pasta onde serão salvos o(s) arquivo(s)..."))
         self.telaCarregando(False)
         
-        if gerarEtiquetas.main(char_assinante, data, self.caminhoArquivo, self.caminhoMedicoes, pastaDestino) == 0:
-            QtWidgets.QMessageBox.information(None, 'Sucesso!', f'CT-Es etiquetadas e salvas na "{pastaDestino}"!')
+        if pastaDestino != '' and gerarEtiquetas.main(char_assinante, data, self.caminhoArquivo, self.caminhoMedicoes, pastaDestino) == 0:
+                QtWidgets.QMessageBox.information(None, 'Sucesso!', f'CT-Es etiquetadas e salvas na "{pastaDestino}"!')
 
     
     def eventoGerarRelatorio(self):
@@ -260,8 +272,10 @@ class Ui_JanelaTagg(object):
         localSalvamento = str(QtWidgets.QFileDialog.getExistingDirectory(caption="Selecione a pasta onde serão salvos o(s) arquivo(s)..."))
         self.telaCarregando(False)
         
-        gerarRelatorio.main(localSalvamento, self.pastaLeitor, self.relatorio_checkboxArquivoUnico.isChecked())
-        QtWidgets.QMessageBox.information(None, 'Sucesso!', f'Relatório emitido na pasta: "{localSalvamento}"!')
+        if localSalvamento != '':
+            gerarRelatorio.main(localSalvamento, self.pastaLeitor, self.relatorio_checkboxArquivoUnico.isChecked())
+            QtWidgets.QMessageBox.information(None, 'Sucesso!', f'Relatório emitido na pasta: "{localSalvamento}"!')
+            
     
     def eventoSelecaoPasta(self):
         # Abre seletor de pasta
@@ -313,4 +327,8 @@ if __name__ == "__main__":
     ui = Ui_JanelaTagg()
     ui.setupUi(JanelaTagg)
     JanelaTagg.show()
+    
+    app.setWindowIcon(QtGui.QIcon('icon.ico'))
+    JanelaTagg.setWindowIcon(QtGui.QIcon('icon.ico'))
+    
     sys.exit(app.exec())
