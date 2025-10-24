@@ -21,9 +21,15 @@ class Ui_JanelaTagg(object):
         self.centralwidget.setEnabled(True)
         self.centralwidget.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
         self.centralwidget.setObjectName("centralwidget")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.abasWidget = QtWidgets.QTabWidget(parent=self.centralwidget)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.stackedWidget = QtWidgets.QStackedWidget(parent=self.centralwidget)
+        self.stackedWidget.setObjectName("stackedWidget")
+        self.JanelaMain = QtWidgets.QWidget()
+        self.JanelaMain.setObjectName("JanelaMain")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.JanelaMain)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.abasWidget = QtWidgets.QTabWidget(parent=self.JanelaMain)
         self.abasWidget.setObjectName("abasWidget")
         self.abaRelatorio = QtWidgets.QWidget()
         self.abaRelatorio.setObjectName("abaRelatorio")
@@ -158,7 +164,28 @@ class Ui_JanelaTagg(object):
         self.gridLayout_2.addWidget(self.widget_7, 1, 0, 1, 1)
         self.verticalLayout_4.addWidget(self.widget_4)
         self.abasWidget.addTab(self.abaEtiquetador, "")
-        self.verticalLayout_2.addWidget(self.abasWidget)
+        self.horizontalLayout.addWidget(self.abasWidget)
+        self.stackedWidget.addWidget(self.JanelaMain)
+        self.JanelaAguardando = QtWidgets.QWidget()
+        self.JanelaAguardando.setObjectName("JanelaAguardando")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.JanelaAguardando)
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.labelAguardando = QtWidgets.QLabel(parent=self.JanelaAguardando)
+        self.labelAguardando.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.labelAguardando.setObjectName("label")
+        
+        self.labelAguardando.setGeometry(QtCore.QRect(25, 25, 200, 200))
+        self.labelAguardando.setMinimumSize(QtCore.QSize(200, 200))
+        self.labelAguardando.setMaximumSize(QtCore.QSize(200, 200))
+        
+        self.movie = QtGui.QMovie("loading.gif")
+        self.movie.setScaledSize(QtCore.QSize(30, 30))
+        self.labelAguardando.setMovie(self.movie)
+        self.movie.start()
+        
+        self.horizontalLayout_3.addWidget(self.labelAguardando)        
+        self.stackedWidget.addWidget(self.JanelaAguardando)
+        self.horizontalLayout_2.addWidget(self.stackedWidget)
         JanelaTagg.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(parent=JanelaTagg)
         self.statusbar.setObjectName("statusbar")
@@ -179,6 +206,12 @@ class Ui_JanelaTagg(object):
         self.etiquetador_botaoSelecaoMedicoes.clicked.connect(self.eventoSelecaoMedicoes)
         self.etiquetador_botaoGerar.clicked.connect(self.eventoGerarEtiquetas)
         
+        
+    def telaCarregando(self, value:bool):
+        if value:
+            self.stackedWidget.setCurrentIndex(1)
+        else:
+            self.stackedWidget.setCurrentIndex(0)
         
     def eventoTrocaAba(self):
         self.etiquetador_inputSelecaoData.setDate(datetime.today())
@@ -214,15 +247,18 @@ class Ui_JanelaTagg(object):
             case "Ninguém (Deixar em branco)":
                 char_assinante = 'nenhum'
                 
-        
+        self.telaCarregando(True)
         pastaDestino = str(QtWidgets.QFileDialog.getExistingDirectory(caption="Selecione a pasta onde serão salvos o(s) arquivo(s)..."))
+        self.telaCarregando(False)
         
         if gerarEtiquetas.main(char_assinante, data, self.caminhoArquivo, self.caminhoMedicoes, pastaDestino) == 0:
             QtWidgets.QMessageBox.information(None, 'Sucesso!', f'CT-Es etiquetadas e salvas na "{pastaDestino}"!')
 
     
     def eventoGerarRelatorio(self):
+        self.telaCarregando(True)
         localSalvamento = str(QtWidgets.QFileDialog.getExistingDirectory(caption="Selecione a pasta onde serão salvos o(s) arquivo(s)..."))
+        self.telaCarregando(False)
         
         gerarRelatorio.main(localSalvamento, self.pastaLeitor, self.relatorio_checkboxArquivoUnico.isChecked())
         QtWidgets.QMessageBox.information(None, 'Sucesso!', f'Relatório emitido na pasta: "{localSalvamento}"!')
@@ -230,7 +266,11 @@ class Ui_JanelaTagg(object):
     def eventoSelecaoPasta(self):
         # Abre seletor de pasta
         self.relatorio_inputSelecaoPasta.setPlainText("Aguarde...")
+
+        self.telaCarregando(True)
         pasta = str(QtWidgets.QFileDialog.getExistingDirectory(caption="Selecione a pasta onde estão os PDFs DHL..."))
+        self.telaCarregando(False)
+        
         self.relatorio_inputSelecaoPasta.setPlainText(pasta)
         
         self.pastaLeitor = pasta
@@ -263,6 +303,7 @@ class Ui_JanelaTagg(object):
         self.etiquetador_botaoGerar.setText(_translate("JanelaTagg", "Gerar"))
         self.etiquetador_labelObs.setText(_translate("JanelaTagg", "<html><head/><body><p>OBS: Após gerar você deve selecionar a pasta onde será salvo o arquivo com todas as <span style=\" font-weight:700;\">CT-Es etiquetadas</span></p></body></html>"))
         self.abasWidget.setTabText(self.abasWidget.indexOf(self.abaEtiquetador), _translate("JanelaTagg", "Etiquetador"))
+        # self.labelAguardando.setText(_translate("JanelaTagg", "Aguardando..."))
 
 
 if __name__ == "__main__":

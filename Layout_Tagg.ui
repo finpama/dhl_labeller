@@ -26,397 +26,422 @@
    <property name="layoutDirection">
     <enum>Qt::LayoutDirection::LeftToRight</enum>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QTabWidget" name="abasWidget">
+     <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
-      <widget class="QWidget" name="abaRelatorio">
-       <attribute name="title">
-        <string>Gerador Relatório</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="sizeConstraint">
-         <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
-        </property>
+      <widget class="QWidget" name="JanelaMain">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="relatorio_titulo">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <widget class="QTabWidget" name="abasWidget">
+          <property name="currentIndex">
+           <number>0</number>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:700;&quot;&gt;Gerar Relatório&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::TextFormat::RichText</enum>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="widget" native="true">
-          <widget class="QPlainTextEdit" name="relatorio_inputSelecaoPasta">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>20</y>
-             <width>401</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="tabChangesFocus">
-            <bool>false</bool>
-           </property>
-           <property name="textInteractionFlags">
-            <set>Qt::TextInteractionFlag::NoTextInteraction</set>
-           </property>
-           <property name="placeholderText">
-            <string>Selecione a pasta para leitura dos CT-Es DHL</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="relatorio_botaoSelecaoPasta">
-           <property name="geometry">
-            <rect>
-             <x>400</x>
-             <y>20</y>
-             <width>121</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Selecionar Pasta</string>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="relatorio_checkboxArquivoUnico">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>70</y>
-             <width>281</width>
-             <height>20</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Gerar arquivo com todas as CT-Es (sem etiqueta)</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="relatorio_labelSelecaoPasta">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>121</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Seleção dos CT-Es:</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="widget_2" native="true">
-          <property name="layoutDirection">
-           <enum>Qt::LayoutDirection::RightToLeft</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <item row="1" column="0">
-            <widget class="QWidget" name="widget_5" native="true">
-             <widget class="QPushButton" name="relatorio_botaoGerar">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>111</width>
-                <height>41</height>
-               </rect>
+          <widget class="QWidget" name="abaRelatorio">
+           <attribute name="title">
+            <string>Gerador Relatório</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="sizeConstraint">
+             <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+            </property>
+            <item>
+             <widget class="QLabel" name="relatorio_titulo">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>50</height>
+               </size>
               </property>
               <property name="text">
-               <string>Gerar</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:700;&quot;&gt;Gerar Relatório&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::TextFormat::RichText</enum>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
               </property>
              </widget>
-             <widget class="QLabel" name="relatorio_labelObs">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>50</y>
-                <width>401</width>
-                <height>16</height>
-               </rect>
+            </item>
+            <item>
+             <widget class="QWidget" name="widget" native="true">
+              <widget class="QPlainTextEdit" name="relatorio_inputSelecaoPasta">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>20</y>
+                 <width>401</width>
+                 <height>31</height>
+                </rect>
+               </property>
+               <property name="tabChangesFocus">
+                <bool>false</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+               <property name="placeholderText">
+                <string>Selecione a pasta para leitura dos CT-Es DHL</string>
+               </property>
+              </widget>
+              <widget class="QPushButton" name="relatorio_botaoSelecaoPasta">
+               <property name="geometry">
+                <rect>
+                 <x>400</x>
+                 <y>20</y>
+                 <width>121</width>
+                 <height>31</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Selecionar Pasta</string>
+               </property>
+              </widget>
+              <widget class="QCheckBox" name="relatorio_checkboxArquivoUnico">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>70</y>
+                 <width>281</width>
+                 <height>20</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Gerar arquivo com todas as CT-Es (sem etiqueta)</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="relatorio_labelSelecaoPasta">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>121</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Seleção dos CT-Es:</string>
+               </property>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="widget_2" native="true">
+              <property name="layoutDirection">
+               <enum>Qt::LayoutDirection::RightToLeft</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <item row="1" column="0">
+                <widget class="QWidget" name="widget_5" native="true">
+                 <widget class="QPushButton" name="relatorio_botaoGerar">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>111</width>
+                    <height>41</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>Gerar</string>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="relatorio_labelObs">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>50</y>
+                    <width>401</width>
+                    <height>16</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>OBS: Após gerar você deve selecionar a pasta onde será salvo o(s) arquivo(s)</string>
+                  </property>
+                 </widget>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QWidget" name="widget_6" native="true"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+           <zorder>widget_2</zorder>
+           <zorder>widget</zorder>
+           <zorder>relatorio_titulo</zorder>
+          </widget>
+          <widget class="QWidget" name="abaEtiquetador">
+           <attribute name="title">
+            <string>Etiquetador</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QLabel" name="etiquetador_titulo">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>50</height>
+               </size>
               </property>
               <property name="text">
-               <string>OBS: Após gerar você deve selecionar a pasta onde será salvo o(s) arquivo(s)</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:700;&quot;&gt;Etiquetador de CT-Es – DHL&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::TextFormat::RichText</enum>
               </property>
              </widget>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QWidget" name="widget_6" native="true"/>
-           </item>
-          </layout>
+            </item>
+            <item>
+             <widget class="QWidget" name="widget_3" native="true">
+              <widget class="QLabel" name="etiquetador_labelSelecaoArquivo">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>131</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Seleção dos CT-Es:</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="etiquetador_inputSelecaoArquivo">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>20</y>
+                 <width>401</width>
+                 <height>31</height>
+                </rect>
+               </property>
+               <property name="tabChangesFocus">
+                <bool>false</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+               <property name="placeholderText">
+                <string>Selecione a pasta ou arquivo único para leitura dos CT-Es DHL</string>
+               </property>
+              </widget>
+              <widget class="QPushButton" name="etiquetador_botaoSelecaoArquivo">
+               <property name="geometry">
+                <rect>
+                 <x>400</x>
+                 <y>20</y>
+                 <width>121</width>
+                 <height>31</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Selecionar Pasta</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="etiquetador_labelSelecaoMedicoes">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>70</y>
+                 <width>131</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Seleção dos Pedidos:</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="etiquetador_inputSelecaoMedicoes">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>90</y>
+                 <width>401</width>
+                 <height>31</height>
+                </rect>
+               </property>
+               <property name="tabChangesFocus">
+                <bool>false</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+               <property name="placeholderText">
+                <string>Selecione a planilha &quot;Medições DHL.xlsm&quot; mais atualizada</string>
+               </property>
+              </widget>
+              <widget class="QPushButton" name="etiquetador_botaoSelecaoMedicoes">
+               <property name="geometry">
+                <rect>
+                 <x>400</x>
+                 <y>90</y>
+                 <width>121</width>
+                 <height>31</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Selecionar Planilha</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="etiquetador_labelSelecaoData">
+               <property name="geometry">
+                <rect>
+                 <x>530</x>
+                 <y>70</y>
+                 <width>211</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Utilizar pedidos de qual data?</string>
+               </property>
+              </widget>
+              <widget class="QDateEdit" name="etiquetador_inputSelecaoData">
+               <property name="geometry">
+                <rect>
+                 <x>530</x>
+                 <y>90</y>
+                 <width>151</width>
+                 <height>31</height>
+                </rect>
+               </property>
+               <property name="cursor">
+                <cursorShape>SizeAllCursor</cursorShape>
+               </property>
+               <property name="readOnly">
+                <bool>false</bool>
+               </property>
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QLabel" name="etiquetador_labelAssinante">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>140</y>
+                 <width>301</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Quem irá assinar?</string>
+               </property>
+              </widget>
+              <widget class="QComboBox" name="etiquetador_inputAssinante">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>160</y>
+                 <width>201</width>
+                 <height>24</height>
+                </rect>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Michelle Correa Lisboa</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Gustavo Carvalho Daquano</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Ninguém (Deixar em branco)</string>
+                </property>
+               </item>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="widget_4" native="true">
+              <layout class="QGridLayout" name="gridLayout_2">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QWidget" name="widget_8" native="true"/>
+               </item>
+               <item row="1" column="0">
+                <widget class="QWidget" name="widget_7" native="true">
+                 <widget class="QPushButton" name="etiquetador_botaoGerar">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>111</width>
+                    <height>41</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>Gerar</string>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="etiquetador_labelObs">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>50</y>
+                    <width>571</width>
+                    <height>16</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;OBS: Após gerar você deve selecionar a pasta onde será salvo o arquivo com todas as &lt;span style=&quot; font-weight:700;&quot;&gt;CT-Es etiquetadas&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
        </layout>
-       <zorder>widget_2</zorder>
-       <zorder>widget</zorder>
-       <zorder>relatorio_titulo</zorder>
       </widget>
-      <widget class="QWidget" name="abaEtiquetador">
-       <attribute name="title">
-        <string>Etiquetador</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+      <widget class="QWidget" name="JanelaAguardando">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QLabel" name="etiquetador_titulo">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>50</height>
-           </size>
-          </property>
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:700;&quot;&gt;Etiquetador de CT-Es – DHL&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>teste</string>
           </property>
-          <property name="textFormat">
-           <enum>Qt::TextFormat::RichText</enum>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="widget_3" native="true">
-          <widget class="QLabel" name="etiquetador_labelSelecaoArquivo">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>131</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Seleção dos CT-Es:</string>
-           </property>
-          </widget>
-          <widget class="QPlainTextEdit" name="etiquetador_inputSelecaoArquivo">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>20</y>
-             <width>401</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="tabChangesFocus">
-            <bool>false</bool>
-           </property>
-           <property name="textInteractionFlags">
-            <set>Qt::TextInteractionFlag::NoTextInteraction</set>
-           </property>
-           <property name="placeholderText">
-            <string>Selecione a pasta ou arquivo único para leitura dos CT-Es DHL</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="etiquetador_botaoSelecaoArquivo">
-           <property name="geometry">
-            <rect>
-             <x>400</x>
-             <y>20</y>
-             <width>121</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Selecionar Pasta</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="etiquetador_labelSelecaoMedicoes">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>70</y>
-             <width>131</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Seleção dos Pedidos:</string>
-           </property>
-          </widget>
-          <widget class="QPlainTextEdit" name="etiquetador_inputSelecaoMedicoes">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>90</y>
-             <width>401</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="tabChangesFocus">
-            <bool>false</bool>
-           </property>
-           <property name="textInteractionFlags">
-            <set>Qt::TextInteractionFlag::NoTextInteraction</set>
-           </property>
-           <property name="placeholderText">
-            <string>Selecione a planilha &quot;Medições DHL.xlsm&quot; mais atualizada</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="etiquetador_botaoSelecaoMedicoes">
-           <property name="geometry">
-            <rect>
-             <x>400</x>
-             <y>90</y>
-             <width>121</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Selecionar Planilha</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="etiquetador_labelSelecaoData">
-           <property name="geometry">
-            <rect>
-             <x>530</x>
-             <y>70</y>
-             <width>211</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Utilizar pedidos de qual data?</string>
-           </property>
-          </widget>
-          <widget class="QDateEdit" name="etiquetador_inputSelecaoData">
-           <property name="geometry">
-            <rect>
-             <x>530</x>
-             <y>90</y>
-             <width>151</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="cursor">
-            <cursorShape>SizeAllCursor</cursorShape>
-           </property>
-           <property name="readOnly">
-            <bool>false</bool>
-           </property>
-           <property name="calendarPopup">
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QLabel" name="etiquetador_labelAssinante">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>140</y>
-             <width>301</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Quem irá assinar?</string>
-           </property>
-          </widget>
-          <widget class="QComboBox" name="etiquetador_inputAssinante">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>160</y>
-             <width>201</width>
-             <height>24</height>
-            </rect>
-           </property>
-           <item>
-            <property name="text">
-             <string>Michelle Correa Lisboa</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Gustavo Carvalho Daquano</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Ninguém (Deixar em branco)</string>
-            </property>
-           </item>
-          </widget>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="widget_4" native="true">
-          <layout class="QGridLayout" name="gridLayout_2">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QWidget" name="widget_8" native="true"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QWidget" name="widget_7" native="true">
-             <widget class="QPushButton" name="etiquetador_botaoGerar">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>111</width>
-                <height>41</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Gerar</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="etiquetador_labelObs">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>50</y>
-                <width>571</width>
-                <height>16</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;OBS: Após gerar você deve selecionar a pasta onde será salvo o arquivo com todas as &lt;span style=&quot; font-weight:700;&quot;&gt;CT-Es etiquetadas&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-             </widget>
-            </widget>
-           </item>
-          </layout>
          </widget>
         </item>
        </layout>
@@ -427,6 +452,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
